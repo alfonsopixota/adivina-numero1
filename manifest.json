@@ -1,10 +1,11 @@
 {
-  "name": "Adivina el Número",
+  "name": "Juego Adivina el N\u00famero",
   "short_name": "Adivina",
-  "start_url": "index.html",
+  "start_url": "./index.html",
   "display": "standalone",
-  "background_color": "#222222",
+  "background_color": "#ffffff",
   "theme_color": "#222222",
+  "description": "Juego interactivo para adivinar un n\u00famero del 1 al 100.",
   "icons": [
     {
       "src": "icon-192.png",
