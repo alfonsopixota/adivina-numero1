@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <title>Juego Adivina el Número Moderno</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#222222" />
+  <link rel="manifest" href="manifest.json" />
+  <link rel="icon" href="icon-192.png" />
+  <style>
+    body {
+      margin: 0;
+      font-family: sans-serif;
+      background: linear-gradient(to top, #0f2027, #203a43, #2c5364);
+      color: white;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      text-align: center;
+    }
+    input, button {
+      padding: 10px;
+      margin: 10px;
+      font-size: 1.2em;
+    }
+    .mensaje {
+      font-size: 1.5em;
+      margin-top: 20px;
+      transition: all 0.3s ease;
+    }
+  </style>
+</head>
+<body>
+  <h1>Adivina el Número</h1>
+  <p>Intenta adivinar el número entre 1 y 100</p>
+  <input type="number" id="entrada" min="1" max="100" />
+  <button onclick="adivinar()">Adivinar</button>
+  <div class="mensaje" id="mensaje"></div>
+  <audio id="sonidoAcierto" src="https://actions.google.com/sounds/v1/cartoon/clang_and_wobble.ogg"></audio>
+  <audio id="sonidoError" src="https://actions.google.com/sounds/v1/cartoon/boing.ogg"></audio>
+  <script>
+    let numeroSecreto = Math.floor(Math.random() * 100) + 1;
+    let intentos = 5;
+
+    function adivinar() {
+      const entrada = document.getElementById("entrada");
+      const mensaje = document.getElementById("mensaje");
+      const valor = Number(entrada.value);
+      if (!valor || valor < 1 || valor > 100) {
+        mensaje.textContent = "Introduce un número válido entre 1 y 100.";
+        return;
+      }
+      intentos--;
+      if (valor === numeroSecreto) {
+        document.getElementById("sonidoAcierto").play();
+        mensaje.textContent = "¡Correcto! Has adivinado el número.";
+        setTimeout(() => location.reload(), 3000);
+      } else if (intentos > 0) {
+        document.getElementById("sonidoError").play();
+        mensaje.textContent = valor < numeroSecreto ?
+          `Demasiado bajo. Te quedan ${intentos} intentos.` :
+          `Demasiado alto. Te quedan ${intentos} intentos.`;
+      } else {
+        document.getElementById("sonidoError").play();
+        mensaje.textContent = `¡Has perdido! El número era ${numeroSecreto}.`;
+        setTimeout(() => location.reload(), 3000);
+      }
+      entrada.value = "";
+    }
+  </script>
+  <script>
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register('sw.js').then(() => {
+        console.log('Service Worker registrado');
+      });
+    }
+  </script>
+</body>
+</html>
